@@ -16,6 +16,7 @@ class EventUpdateRequest extends FormRequest
         return [
             'title' => 'required|string|max:225',
             'start_at' => 'required|date',
+            'end_at' => 'required|date',
             'description' => 'nullable|string|max:65535',
             'venue' => 'required|string|max:65535',
             'lat' => 'required|numeric|between:-90.0000000,90.0000000',
