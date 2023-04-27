@@ -14,6 +14,13 @@
 </div>
 
 <div class="p-4">
+    <x-input-label class="mb-2" for="end_at" :value="__('End at')" />
+    <x-text-input id="end_at" name="end_at" type="text" required
+        :value="old('end_at')" />
+    <x-input-error class="mt-2" :messages="$errors->get('end_at')" />
+</div>
+
+<div class="p-4">
     <x-input-label class="mb-2" for="description" :value="__('Description')" />
     <textarea id="description" name="description"
         class="block w-full h-48 border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EventUpdateRequest;
+use App\Models\Category;
 use App\Models\Event;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,8 +41,12 @@ class EventController extends Controller
     {
 
         $validated = $request->validated();
+        // TODO: add correct category
+        $category = Category::find(1);  
 
-        $event = Event::create($validated);
+        $event = new Event($validated);
+        $event->category()->associate($category);
+        $event->save();
 
         return redirect(route('admin.events.show', [
             'event' => $event
