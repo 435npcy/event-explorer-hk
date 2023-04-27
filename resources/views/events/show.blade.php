@@ -1,0 +1,127 @@
+<x-app-layout>
+    <div class="flex max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        <div class="flex-1">
+            <div class="bg-white shadow-sm rounded-lg divide-y">
+                <div
+                    class="px-6 py-4 mx-auto bg-white rounded-xl shadow-md overflow-hidden"
+                >
+                    <div class="text-lg font-light text-gray-500">
+                        <small>{{ $event->category->name }}</small>
+                    </div>
+                    <h1 class="text-2xl font-bold">{{ $event->title }}</h1>
+                    <div class="my-4">
+                        <img class="w-full" src={{ $event->image_url }} />
+                    </div>
+                    <div class="pb-4 flex space-x-2">
+                        <div class="flex-1">
+                            <div class="flex">
+                                <time class="text-lg text-gray-600"
+                                    >{{ $event->start_at->format('j M Y, g:i:a')
+                                    }}</time
+                                >
+                                <span class="text-lg text-gray-600 mx-2">-</span>
+                                <time class="text-lg text-gray-600"
+                                    >{{ $event->end_at->format('j M Y, g:i:a')
+                                    }}</time
+                                >
+                            </div>
+                            <div class="mt-2">
+                                <h2 class="text-lg font-semibold">{{ __('Description') }}</h2>
+                                <hr />
+                            </div>
+                            <p class="mt-4 text-lg text-gray-900">
+                                {{ $event->description }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-4 p-4 bg-white shadow-sm rounded-lg divide-y">
+                <div class="mt-2">
+                    <h2 class="text-lg font-semibold">{{ __('Location') }}</h2>
+                    <hr />
+                </div>
+                <div>
+                    <p class="mt-4 text-lg text-gray-900">
+                        {{ $event->venue }}
+                    </p>
+                </div>
+                <div id="map" class="mt-4 w-full" style="height: 580px"></div>
+            </div>
+        </div>
+        <div class="flex-none mx-8">
+            <div class="bg-gray-500 h-96">
+            </div>
+            <div class="">
+                <a href="{{ route('admin.events.create') }}">
+                    <button
+                        type="button"
+                        class="mt-4 w-64 h-12 text-xl text-white bg-indigo-500 hover:bg-indigo-600 justify-center self-end"
+                    >
+                        {{ __('Buy') }}
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+    <x-primary-button
+        type="button"
+        id="find-me"
+        class="mt-4 w-48 justify-center self-end"
+    >
+        Show my location
+    </x-primary-button>
+    <br />
+    <p id="status"></p>
+    <a id="map-link" target="_blank"></a>
+    <script>
+        // Creating map options
+        var mapOptions = {
+            center: [{{ $event->lat }}, {{ $event->lng }}],
+            zoom: 15,
+        };
+
+        // Creating a map object
+        var map = new L.map("map", mapOptions);
+
+        // Creating a Layer object
+        var layer = new L.TileLayer(
+            "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        );
+
+        // Adding layer to the map
+        map.addLayer(layer);
+    </script>
+    <script>
+        function geoFindMe() {
+            const status = document.querySelector("#status");
+            const mapLink = document.querySelector("#map-link");
+
+            mapLink.href = "";
+            mapLink.textContent = "";
+
+            function success(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                status.textContent = "";
+                mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+                mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
+            }
+
+            function error() {
+                status.textContent = "Unable to retrieve your location";
+            }
+
+            if (!navigator.geolocation) {
+                status.textContent =
+                    "Geolocation is not supported by your browser";
+            } else {
+                status.textContent = "Locating…";
+                navigator.geolocation.getCurrentPosition(success, error);
+            }
+        }
+
+        document.querySelector("#find-me").addEventListener("click", geoFindMe);
+    </script>
+</x-app-layout>
