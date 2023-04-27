@@ -33,7 +33,7 @@
     <x-input-label class="mb-2" for="lat" :value="__('Latitude')" />
     <x-text-input id="lat" name="lat" type="number" required
         class="mt-1 block w-1/3"
-        :value="old('lat', $event->lat)" />
+        :value="old('lat')" />
     <x-input-error class="mt-2" :messages="$errors->get('lat')" />
 </div>
 
@@ -41,7 +41,7 @@
     <x-input-label class="mb-2" for="lng" :value="__('Longitude')" />
     <x-text-input id="lng" name="lng" type="number" required
         class="mt-1 block w-1/3"
-        :value="old('lng', $event->lng)" />
+        :value="old('lng')" />
     <x-input-error class="mt-2" :messages="$errors->get('lng')" />
 </div>
 
@@ -49,6 +49,6 @@
     <x-input-label class="mb-2" for="image_url" :value="__('Image URL')" />
     <x-text-input id="image_url" name="image_url" type="text" required
         class="mt-1 block w-full"
-        :value="old('image_url', $event->image_url)" />
+        :value="old('image_url')" />
     <x-input-error class="mt-2" :messages="$errors->get('Image URL')" />
 </div>
