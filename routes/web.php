@@ -20,6 +20,8 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/search/{keyword?}', [EventController::class, 'listSearchResult'])->name('events.search');
+Route::post('/search', [EventController::class, 'search'])->name('events.search.submit');
 Route::get('/events/today', [EventController::class, 'listTodayEvents'])->name('events.today');
 Route::get('/categories/{categoryName}', [EventController::class, 'listActiveEventsByCategory'])->name('categories.list');
 

@@ -8,8 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
-
 
 class EventController extends Controller
 {
@@ -23,6 +23,44 @@ class EventController extends Controller
             ->get();
 
         return view('events.index', [
+            'events' => $events,
+        ]);
+    }
+
+    /**
+     * Handle event search querey.
+     */
+    public function search(Request $request): RedirectResponse
+    {
+        return redirect(
+            route(
+                'events.search',
+                ['keyword' => $request->input('searchKeyword')]
+            )
+        );
+    }
+
+    /**
+     * Display a listing of the event search result.
+     */
+    public function listSearchResult(string $keyword = ''): View
+    {
+        $events = [];
+
+        if ($keyword) {
+            $result = DB::table('events')
+            ->whereFullText('title', $keyword)
+            // ->orWhereFullText('description', $keyword)
+            // ->orWhereFullText('venue', $keyword)
+            ->get();
+
+            $events = $result->map(function ($event) {
+                $newevent = Event::findOrFail($event->id);
+                return $newevent;
+            });
+        }
+
+        return view('events.search-result', [
             'events' => $events,
         ]);
     }
