@@ -50,8 +50,9 @@ class EventController extends Controller
         if ($keyword) {
             $result = DB::table('events')
             ->whereFullText('title', $keyword)
-            // ->orWhereFullText('description', $keyword)
-            // ->orWhereFullText('venue', $keyword)
+            ->orWhereFullText('description', $keyword)
+        
+            ->orWhereFullText('venue', $keyword)
             ->get();
 
             $events = $result->map(function ($event) {
