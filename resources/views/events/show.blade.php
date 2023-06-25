@@ -53,7 +53,8 @@
             <div class="bg-gray-500 h-96">
             </div>
             <div class="">
-                <a href="{{ route('admin.events.create') }}">
+                <a href="{{ route('goToPayment', [$event->title, 150]) }}">
+                <!-- <a href="{{ route('admin.events.create') }}"> -->
                     <button
                         type="button"
                         class="mt-4 w-64 h-12 text-xl text-white bg-indigo-500 hover:bg-indigo-600 justify-center self-end"
@@ -124,4 +125,27 @@
 
         document.querySelector("#find-me").addEventListener("click", geoFindMe);
     </script>
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card">
+<div class="card-header">{{ __('Dashboard') }}</div>
+<div class="card-body">
+@if (session('status'))
+<div class="alert alert-success" role="alert">
+{{ session('status') }}
+</div>
+@endif
+{{ __('You are logged in!') }} <br><br>
+<h3>Products</h3>
+<a href="{{route('goToPayment', ['search list', 25])}}"><button>In Recommended Search List for $25</button></a> &nbsp;
+<a href="{{route('goToPayment', ['update information', 4])}}"><button>Update Information for $10</button></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
 </x-app-layout>
