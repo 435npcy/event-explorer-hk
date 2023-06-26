@@ -39,13 +39,15 @@ class OrderController extends Controller
         $user = $request->user();
         $event = Event::findOrFail($eventId);
 
-
+        $isAllZero = true;
         foreach ($items as $ticketTypeId => $quantity) {
-            if ($quantity === '0') {
-                return back()->withErrors(['message' => 'Quantity cannot be zero.']);
+            if ($isAllZero === true && $quantity === '0') {
+                $isAllZero = false;
             }
         }
-
+        if ($isAllZero) {
+            return back()->withErrors(['message' => 'Quantity cannot be zero.']);
+        }
 
 
         $order = new Order([
