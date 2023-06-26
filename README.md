@@ -7,7 +7,7 @@
 4. Update `.env` , reference from `.env.example`
     - production value
 5. On VS Code, Click `Terminal` > `New Terminal`
-6. Run command `compose install`
+6. Run command `composer install`
 7. Run command `php artisan migrate`
     - Enter `yes` for run this command
 8. (Optional) Run other commands if needed
