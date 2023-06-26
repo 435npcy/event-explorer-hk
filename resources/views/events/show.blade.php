@@ -50,18 +50,64 @@
             </div>
         </div>
         <div class="flex-none mx-8">
-            <div class="bg-gray-500 h-96">
-            </div>
-            <div class="">
-                <a href="{{ route('goToPayment', [$event->title, 150]) }}">
-                <!-- <a href="{{ route('admin.events.create') }}"> -->
-                    <button
-                        type="button"
-                        class="mt-4 w-64 h-12 text-xl text-white bg-indigo-500 hover:bg-indigo-600 justify-center self-end"
-                    >
-                        {{ __('Buy') }}
-                    </button>
-                </a>
+            <!-- <div class="bg-gray-500 h-96"></div> -->
+            <div class="grid grid-cols-1 border rounded-lg bg-gray-200 p-4">
+                <div class="border-solid border-b-2 border-black mb-4">Ticket Type</div>
+                    @if (count($event->ticketTypes) > 0)
+                        <form class="grid gap-2"
+                            method="POST"
+                            action="{{ route('orders.store', ['eventId' => $event->id]) }}"
+                        >
+                            @csrf
+                            @if (count($errors) > 0)
+                            <div class="text-red-500">
+                                @foreach ($errors->all() as $error) {{ $error }}<br />
+                                @endforeach
+                            </div>
+                            @endif
+                            @foreach ($event->ticketTypes as $ticketType)
+                                <label class="flex items-center justify-between">
+                                    <span class="text-gray-700">{{ $ticketType->name }}</span>
+                                    <span class="text-gray-500">{{__('$')}}{{ $ticketType->price }}</span>
+                                    <input class="form-number rounded disabled:bg-zinc-200"
+                                        type="number"
+                                        name="items[{{ $ticketType->id }}]"
+                                        value="0" min="0" max="10"
+                                        @guest
+                                            disabled
+                                        @endguest
+                                    />
+                                </label>
+                            @endforeach
+                            @auth
+                                <div class="">
+                                    <button
+                                        class="mt-4 w-64 h-12 text-xl text-white bg-indigo-500 hover:bg-indigo-600 justify-center self-end"
+                                        type="submit"
+                                    >
+                                        {{ __('Buy') }}
+                                    </button>
+                                </div>
+                            @endauth
+                            @guest
+                                <div class="">
+                                    <a href="{{ route('login') }}">
+                                        <button
+                                            class="mt-4 w-64 h-12 text-xl text-white bg-indigo-500 hover:bg-indigo-600 justify-center self-end"
+                                            type="button"
+                                        >
+                                            {{ __('Login to Buy') }}
+                                        </button>
+                                    </a>
+                                </div>
+                            @endguest
+                        </form>
+                    @else
+                        <div class="grid grid-cols-1 gap-6 border rounded-lg bg-gray-200 p-4 w-64">
+                            <p class="text-lg font-light text-gray-500 text-center">Not available</p>
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>
@@ -92,6 +138,8 @@
 
         // Adding layer to the map
         map.addLayer(layer);
+
+        L.marker([{{ $event->lat }}, {{ $event->lng }}]).addTo(map).openPopup();
     </script>
     <script>
         function geoFindMe() {
@@ -139,8 +187,7 @@
 @endif
 {{ __('You are logged in!') }} <br><br>
 <h3>Products</h3>
-<a href="{{route('goToPayment', ['search list', 25])}}"><button>In Recommended Search List for $25</button></a> &nbsp;
-<a href="{{route('goToPayment', ['update information', 4])}}"><button>Update Information for $10</button></a>
+
 </div>
 </div>
 </div>

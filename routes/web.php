@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -29,11 +30,10 @@ Route::get('/categories/{categoryName}', [EventController::class, 'listActiveEve
 Route::resource('/events', EventController::class)
     ->only(['index', 'show']);
 
-Route::get('/payment/{string}/{price}', [PaymentController::class, 'charge'])->name('goToPayment');
-Route::post('/payment/process-payment/{string}/{price}', [PaymentController::class, 'processPayment'])->name('processPayment');
+Route::get('/payment/{orderId}', [PaymentController::class, 'charge'])->name('payment.charge');
+Route::post('/payment/process-payment/{orderId}', [PaymentController::class, 'process'])->name('payment.process');
 Route::post('/payment/webhooks', [PaymentController::class, 'webhooks'])->name('payment.webhooks');
-Route::get('/payment/result', function () {
-    return view('payment.result'); })->name('payment.result');
+Route::get('/payment/result/{orderId}', [PaymentController::class, 'getResult'])->name('payment.result');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -44,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{eventId}', [OrderController::class, 'store'])->name('orders.store');
 });
 
 

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             CategorySeeder::class,
             EventSeeder::class,
-            // TicketSeed::class,
+            TicketTypeSeeder::class,
         ]);
     }
 }
