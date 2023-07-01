@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\EventController as AdminEventController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
@@ -18,9 +19,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/search/{keyword?}', [EventController::class, 'listSearchResult'])->name('events.search');
 Route::post('/search', [EventController::class, 'search'])->name('events.search.submit');

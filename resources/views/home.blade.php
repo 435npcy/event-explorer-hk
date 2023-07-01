@@ -1,9 +1,9 @@
 <x-app-layout>
-    <!-- <x-slot name="header">
+    <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Home') }}
         </h2>
-    </x-slot> -->
+    </x-slot>
 
     <!-- <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -42,12 +42,19 @@
     
    <div class="container mx-auto">
         <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div
+            @foreach ($events as $event)
+            <!-- <div
+            class="flex justify-center p-6 text-6xl bg-gray-100 border-2 border-gray-300 rounded-xl"
+            > -->
+                <a href="{{ route('events.show', ['event' => $event->id]) }}">
+                    <x-event-card class="flex justify-center p-6 text-6xl bg-gray-100 border-2 border-gray-300 rounded-xl" :event="$event"/>
+                </a>
+            <!-- </div> -->
+            @endforeach
+            <!-- <div
             class="flex justify-center p-6 text-6xl bg-gray-100 border-2 border-gray-300 rounded-xl"
             >
-            <a href="{{ route('events.show', ['event' => $event->id]) }}">
-                        <x-event-card :event="$event"/>
-                    </a>
+            1
             </div>
             <div
             class="flex justify-center p-6 text-6xl bg-gray-100 border-2 border-gray-300 rounded-xl"
@@ -68,7 +75,7 @@
             class="flex justify-center p-6 text-6xl bg-gray-100 border-2 border-gray-300 rounded-xl"
             >
             5
-            </div>
+            </div> -->
         </div> 
     </div> 
 </x-app-layout>
