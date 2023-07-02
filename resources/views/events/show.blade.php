@@ -111,7 +111,7 @@
             </div>
         </div>
     </div>
-    <x-primary-button
+    <!-- <x-primary-button
         type="button"
         id="find-me"
         class="mt-4 w-48 justify-center self-end"
@@ -120,7 +120,7 @@
     </x-primary-button>
     <br />
     <p id="status"></p>
-    <a id="map-link" target="_blank"></a>
+    <a id="map-link" target="_blank"></a> -->
     <script>
         // Creating map options
         var mapOptions = {
@@ -141,7 +141,7 @@
 
         L.marker([{{ $event->lat }}, {{ $event->lng }}]).addTo(map).openPopup();
     </script>
-    <script>
+    <!-- <script>
         function geoFindMe() {
             const status = document.querySelector("#status");
             const mapLink = document.querySelector("#map-link");
@@ -192,7 +192,7 @@
 </div>
 </div>
 </div>
-</div>
+</div> -->
 
 
 </x-app-layout>
