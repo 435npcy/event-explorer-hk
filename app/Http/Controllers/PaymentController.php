@@ -32,20 +32,28 @@ class PaymentController extends Controller
   public function process(Request $request, string $orderId)
   {
     $order = Order::findOrFail($orderId);
-
     $user = Auth::user();
-    $paymentMethod = $request->input('payment_method');
-    $user->createOrGetStripeCustomer();
-    $user->addPaymentMethod($paymentMethod);
-    Log::info(['$user', $user]);
 
-    $order->status = Order::PROCESSING;
-    $order->stripe_payment_method = $paymentMethod;
-    $order->save();
-    try {
-      $user->charge($order->total_amount * 100, $paymentMethod);
-    } catch (\Exception $e) {
-      return back()->withErrors(['message' => 'Error creating payment. ' . $e->getMessage()]);
+    if ($order->total_amount > 0) {
+      $paymentMethod = $request->input('payment_method');
+      $user->createOrGetStripeCustomer();
+      $user->addPaymentMethod($paymentMethod);
+      Log::info(['$user', $user]);
+
+      $order->status = Order::PROCESSING;
+      $order->stripe_payment_method = $paymentMethod;
+      $order->save();
+      try {
+        $user->charge($order->total_amount * 100, $paymentMethod);
+      } catch (\Exception $e) {
+        return back()->withErrors(['message' => 'Error creating payment. ' . $e->getMessage()]);
+      }
+    } else {
+      $order->status = Order::SUCCEEDED;
+      $order->save();
+
+      // issue Ticket
+      // $ticket = new Ticket();
     }
 
     return redirect(route('payment.result', [$order->id]));

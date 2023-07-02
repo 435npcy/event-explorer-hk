@@ -14,6 +14,7 @@
             >
                 @csrf
                 <div class="grid grid-cols-1 gap-6">
+                  @if ($order->total_amount > 0)
                     <label class="block" for="card-holder-name">
                         <span class="text-gray-700">Card Holder Name</span>
                         <input
@@ -37,16 +38,16 @@
                         @endforeach
                     </div>
                     @endif
+                  @else
+                    No payment is needed.
+                  @endif
                     <div class="text-center">
-                        <!-- <button
-                            type="button"
-                            id="card-button"
-                            data-secret="{{ $intent->client_secret }}"
-                            class="mt-4 w-64 h-12 text-xl text-white bg-indigo-500 hover:bg-indigo-600 justify-center self-end"
-                            type="submit"
-                        > -->
                         <button
+                          @if ($order->total_amount > 0)
                             type="button"
+                          @else
+                            type="submit"
+                          @endif
                             id="card-button"
                             data-secret="{{ $intent->client_secret }}"
                             class="mt-4 w-64 h-12 text-xl text-white bg-indigo-500 hover:bg-indigo-600 justify-center self-end"
@@ -81,6 +82,7 @@
         </div>
     </div>
   </div>
+  @if($order->total_amount > 0)
       <script src="https://js.stripe.com/v3/"></script>
       <script>
         var stripe = Stripe('{{ env('STRIPE_KEY') }}');
@@ -140,4 +142,5 @@
           form.submit();
         }
       </script>
+  @endif
 </x-app-layout>
