@@ -62,7 +62,7 @@
                             {{ __('Profile') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('orders.index')">
-                            {{ __('Orders') }}
+                            {{ __('My Orders') }}
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('tickets.index')">
                             {{ __('My Tickets') }}

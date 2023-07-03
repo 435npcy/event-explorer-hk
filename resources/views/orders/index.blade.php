@@ -1,6 +1,7 @@
 <x-app-layout>
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
         <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
+        @if (count($orders) > 0)
             @foreach ($orders as $order)
             <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl mb-4">
                 <a href="{{ route('orders.index', ['order' => $order->id]) }}">
@@ -30,6 +31,11 @@
                 </a>
             </div>
             @endforeach
+        @else
+            <div class="max-w-md mx-auto rounded-xl overflow-hidden md:max-w-2xl mb-4 h-24 flex justify-center">
+                <div class="self-center">No Orders</div>
+            </div>
+        @endif
         </div>
     </div>
 </div>
