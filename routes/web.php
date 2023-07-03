@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,6 +47,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders/{eventId}', [OrderController::class, 'store'])->name('orders.store');
+
+    Route::get('/tickets', [TicketController::class, 'index'])->name('tickets.index');
 });
 
 

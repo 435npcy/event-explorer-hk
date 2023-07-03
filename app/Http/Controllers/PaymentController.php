@@ -1,13 +1,12 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use App\Models\Order;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Auth;
-
-
 
 class PaymentController extends Controller
 {
@@ -52,8 +51,16 @@ class PaymentController extends Controller
       $order->status = Order::SUCCEEDED;
       $order->save();
 
-      // issue Ticket
-      // $ticket = new Ticket();
+      foreach ($order->items as $item) {
+        for ($i=0; $i < $item->quantity; $i++) { 
+          $ticket = new Ticket();
+          $ticket->event()->associate($order->event->id);
+          $ticket->user()->associate($user);
+          $ticket->ticketType()->associate($item->ticketType);
+          $ticket->order()->associate($order);
+          $ticket->save();
+        }
+      }
     }
 
     return redirect(route('payment.result', [$order->id]));
@@ -70,8 +77,16 @@ class PaymentController extends Controller
       $order->status = Order::SUCCEEDED;
       $order->save();
 
-      // issue Tickets
-      // $ticket = new Ticket();
+      foreach ($order->items as $item) {
+        for ($i=0; $i < $item->quantity; $i++) { 
+          $ticket = new Ticket();
+          $ticket->event()->associate($order->event->id);
+          $ticket->user()->associate($order->user);
+          $ticket->ticketType()->associate($item->ticketType);
+          $ticket->order()->associate($order);
+          $ticket->save();
+        }
+      }
 
       // send email
       // Mail::send();

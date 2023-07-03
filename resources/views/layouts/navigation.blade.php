@@ -64,6 +64,9 @@
                         <x-dropdown-link :href="route('orders.index')">
                             {{ __('Orders') }}
                         </x-dropdown-link>
+                        <x-dropdown-link :href="route('tickets.index')">
+                            {{ __('My Tickets') }}
+                        </x-dropdown-link>
 
                         @if (Auth::user()->hasRole('admin'))
                             <x-dropdown-link :href="route('dashboard')">
