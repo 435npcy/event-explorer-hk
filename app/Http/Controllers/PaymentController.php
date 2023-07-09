@@ -50,16 +50,16 @@ class PaymentController extends Controller
     } else {
       $order->status = Order::SUCCEEDED;
       $order->save();
+    }
 
-      foreach ($order->items as $item) {
-        for ($i=0; $i < $item->quantity; $i++) { 
-          $ticket = new Ticket();
-          $ticket->event()->associate($order->event->id);
-          $ticket->user()->associate($user);
-          $ticket->ticketType()->associate($item->ticketType);
-          $ticket->order()->associate($order);
-          $ticket->save();
-        }
+    foreach ($order->items as $item) {
+      for ($i=0; $i < $item->quantity; $i++) { 
+        $ticket = new Ticket();
+        $ticket->event()->associate($order->event->id);
+        $ticket->user()->associate($user);
+        $ticket->ticketType()->associate($item->ticketType);
+        $ticket->order()->associate($order);
+        $ticket->save();
       }
     }
 
