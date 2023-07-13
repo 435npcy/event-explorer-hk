@@ -73,8 +73,8 @@ class EventController extends Controller
     {
         $now = Carbon::now();
         $events = Event::where([
-            ['start_at', '>=', $now->copy()->startOfDay()],
-            ['end_at', '<=', $now->copy()->endOfDay()]
+            ['start_at', '<=', $now->copy()->endOfDay()],
+            ['end_at', '>=', $now->copy()->startOfDay()]
         ])
             ->orderBy('start_at')
             ->get();
