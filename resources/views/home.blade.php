@@ -41,8 +41,18 @@
 
     
    <div class="container mx-auto">
-        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-            @foreach ($events as $event)
+        <h2 class="font-bold text-2xl text-gray-800 leading-tight">Event this week</h2>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 my-4">
+            @foreach ($thisWeekEvents as $event)
+                <a href="{{ route('events.show', ['event' => $event->id]) }}">
+                    <x-event-card class="flex justify-center p-6 text-6xl bg-gray-100 border-2 border-gray-300 rounded-xl" :event="$event"/>
+                </a>
+            @endforeach
+        </div> 
+
+        <h2 class="font-semibold text-2xl text-gray-800 leading-tight">Upcoming Events</h2>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 my-4">
+            @foreach ($upcomingEvents as $event)
             <!-- <div
             class="flex justify-center p-6 text-6xl bg-gray-100 border-2 border-gray-300 rounded-xl"
             > -->
@@ -76,6 +86,15 @@
             >
             5
             </div> -->
-        </div> 
-    </div> 
+        </div>
+
+        <h2 class="font-bold text-2xl text-gray-800 leading-tight">Suggested for you</h2>
+        <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 my-4">
+            @foreach ($pickedEvents as $event)
+                <a href="{{ route('events.show', ['event' => $event->id]) }}">
+                    <x-event-card class="flex justify-center p-6 text-6xl bg-gray-100 border-2 border-gray-300 rounded-xl" :event="$event"/>
+                </a>
+            @endforeach
+        </div>
+    </div>
 </x-app-layout>

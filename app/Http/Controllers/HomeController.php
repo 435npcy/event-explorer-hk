@@ -17,12 +17,24 @@ class HomeController extends Controller
    */
   public function index(): View
   {
-    $events = Event::where('start_at', '>', now())
+    $now = Carbon::now();
+    $thisWeekEvents = Event::where([
+        ['start_at', '<=', $now->copy()->endOfDay()],
+        ['end_at', '>=', $now->copy()->addDays(7)->startOfDay()]
+    ])
+      ->get()->random(4)->shuffle();
+
+    $upcomingEvents = Event::where('start_at', '>', now())
       ->orderBy('start_at')
+      ->limit(4)
       ->get();
+    
+    $pickedEvents = Event::all()->random(4)->shuffle();
 
     return view('home', [
-      'events' => $events,
+      'thisWeekEvents' => $thisWeekEvents,
+      'upcomingEvents' => $upcomingEvents,
+      'pickedEvents' => $pickedEvents,
     ]);
   }
 }
